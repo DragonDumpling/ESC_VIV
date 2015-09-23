@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightProperty_Acent : MonoBehaviour {
+public class LightProperty_Washer : MonoBehaviour {
 	public Renderer lightSurface;
 	public Light lightsettings;
 	private Material materialCopy; 
@@ -29,6 +29,8 @@ public class LightProperty_Acent : MonoBehaviour {
 	public float waitDur =0f;
 	public Color setColor = Color.white;
 	public float washerIntencity = 8.0f;
+	private float randomChangeRotation = 0f;
+	private int randomRotInt = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -85,6 +87,8 @@ public class LightProperty_Acent : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.T)){
 			RotateTo(0);
 		}
+
+
 			
 	
 

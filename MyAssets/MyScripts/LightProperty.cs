@@ -107,13 +107,10 @@ public class LightProperty : MonoBehaviour
 		lastCheckTime = Time.time;
 		float savedIntensity = lightsettings.intensity;
 		bool previousEnabled = lensFlare.enabled;
-		//lightsettings.enabled = true;
 		lensFlare.enabled = true;
 		lightSurface.enabled = true;
-		//lightsettings.intensity = 8.0f;
 		assignedIntencity = 8.0f;
 		yield return new WaitForSeconds (durration);
-		lightsettings.enabled = previousEnabled;
 		lensFlare.enabled = previousEnabled;
 		lightSurface.enabled = previousEnabled;
 		assignedIntencity = savedIntensity;

@@ -6,6 +6,7 @@ public class LightingConcole : MonoBehaviour
 {
 	private LightProperty[] spotlights;
 	private LightProperty_Washer[] washerLights;
+	private LightProperty_Ambient[] ambientLights;
 	private Dictionary<int,Spot> spots;
 	private Dictionary<int,List<int>> teams;
 	public LightingColor colorPicker;
@@ -125,6 +126,7 @@ public class LightingConcole : MonoBehaviour
 		spots = new Dictionary<int, Spot> ();
 		spotlights = gameObject.GetComponentsInChildren<LightProperty> ();
 		washerLights = gameObject.GetComponentsInChildren<LightProperty_Washer>();
+		ambientLights = gameObject.GetComponentsInChildren<LightProperty_Ambient>();
 		teamColors = new Dictionary<int, LightingColorE> ();
 		SetTeams (1);
 	}
@@ -290,29 +292,33 @@ public class LightingConcole : MonoBehaviour
 	{
 
 		float dur = 1f;
-		switch(timing){
-		case(Timing.Ten):
-			dur = 10;
-			break;
-		case(Timing.Five):
-			dur = 5;
-			break;
-		case(Timing.Three):
-			dur = 3;
-			break;
-		case(Timing.One):
-			dur = 1;
-			break;
-		case(Timing.Zero):
-			dur = 0.2f;
-			break;
-
-		}
+		dur = GetTimingFloatValue(timing);
 		foreach(LightProperty_Washer lp in washerLights){
 			lp.setColor = colorPicker.GetColor(lColor);
 			lp.onDur = dur;
 			lp.LightUp();
 		}
+	}
+	float GetTimingFloatValue(Timing tim){
+		float returnValue = 1f;
+		switch(tim){
+		case(Timing.Ten):
+			returnValue = 10;
+			break;
+		case(Timing.Five):
+			returnValue = 5;
+			break;
+		case(Timing.Three):
+			returnValue = 3;
+			break;
+		case(Timing.One):
+			returnValue = 1;
+			break;
+		case(Timing.Zero):
+			returnValue = 0.2f;
+			break;
+		}
+		return returnValue;
 	}
 
 	// Specify lighting wash pulse
@@ -371,7 +377,9 @@ public class LightingConcole : MonoBehaviour
 	// Set Ambient Color
 	public void SetAmbientLighting (LightingColorE color, Timing tim)
 	{
-
+		foreach (LightProperty_Ambient aLight in ambientLights) {
+			aLight.SetLight (LightState.on, colorPicker.GetColor(color), GetTimingFloatValue(tim));
+		}
 	}
 
 	// Set Fans
@@ -526,6 +534,9 @@ public class LightingConcole : MonoBehaviour
 			}
 		}
 	}
+
+
+
 
 	// Turn Lights Dim
 	void TurnSpotLightsDim (int teamID, Color incColor, float incSpeed)

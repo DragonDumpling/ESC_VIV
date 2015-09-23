@@ -34,14 +34,18 @@ public class UIControl : MonoBehaviour
 	{
 		ClearActiveButtons ();
 		Create_ShowControlButton ();
-		Button teamSetupButton = NewButton ("Team Setup", buttonColor_normal);
+		Button teamSetupButton = NewButton ("Team Setup Menu", buttonColor_normal);
 		teamSetupButton.onClick.AddListener (delegate {
 			TeamSetupMenu ();
 		});
 
-		Button CuesSelectionButton = NewButton("Cues", buttonColor_normal);
+		Button CuesSelectionButton = NewButton("Cues Menu", buttonColor_normal);
 		CuesSelectionButton.onClick.AddListener(delegate {
 			Menu_Cues();
+		});
+		Button SetLightingMenu = NewButton("SetLighting Menu",buttonColor_normal);
+		SetLightingMenu.onClick.AddListener(delegate {
+			Menu_SetLightsMenu();
 		});
 
 
@@ -61,38 +65,76 @@ public class UIControl : MonoBehaviour
 			lightingCon.Cue_Training_Mode();
 		});
 
-		Button HighlightSpot = NewButton("Highlight Spot", buttonColor_normal);
-		HighlightSpot.onClick.AddListener(delegate {
-			Menu_HighlightSpot();
+		Button TentionsButtons = NewButton("Tention Cues",buttonColor_normal);
+		TentionsButtons.onClick.AddListener(delegate {
+			Menu_Tentions();
 		});
+
+	}
+	public void Menu_Tentions(){
+		ClearActiveButtons();
+		Create_ShowControlButton();
 
 		Button Tention_FastButton = NewButton("Tention_Fast",buttonColor_normal);
 		Tention_FastButton.onClick.AddListener(delegate {
 			lightingCon.Cue_TentionFast();
 		});
-
+		
 		Button Tention_MediumButton = NewButton("Tention_Medium",buttonColor_normal);
 		Tention_MediumButton.onClick.AddListener(delegate {
 			lightingCon.Cue_TentionMedium();
 		});
-
+		
 		Button Tention_SlowButton = NewButton("Tention_Slow",buttonColor_normal);
 		Tention_SlowButton.onClick.AddListener(delegate {
 			lightingCon.Cue_TentionSlow();
 		});
+	}
 
+	public void Menu_SetLightsMenu(){
+		ClearActiveButtons();
+		Create_ShowControlButton();
+		Button HighlightSpot = NewButton("Highlight Spot", buttonColor_normal);
+		HighlightSpot.onClick.AddListener(delegate {
+			Menu_HighlightSpot();
+		});
 		Button SetWasherButton = NewButton("SetWasher",buttonColor_normal);
 		SetWasherButton.onClick.AddListener(delegate {
 			Menu_SetWasher(0);
 		});
-
+		
 		Button lightingPulseButton = NewButton("SetLightingPulse",buttonColor_normal);
 		lightingPulseButton.onClick.AddListener(delegate {
 			Menu_SetLightingPulse();
 		});
+		
+		Button SetAmbientButton = NewButton("SetAmbientLighting",buttonColor_normal);
+		SetAmbientButton.onClick.AddListener(delegate {
+			Menu_SetAmbientLighting(0);
+		});
+	}
 
-
-
+	public void Menu_SetAmbientLighting(int activeTiming){
+		Debug.Log("Menu_SetWasher: " + activeTiming);
+		ClearActiveButtons();
+		Create_ShowControlButton();
+		Color invis = Color.black;
+		invis.a = 0.05f;
+		Button emptyButton = NewButton("Timing",invis);
+		foreach(LightingConcole.Timing pulse in System.Enum.GetValues(typeof(LightingConcole.Timing))){
+			Button TimingButton = NewButton (pulse.ToString (),(int)pulse == activeTiming? buttonColor_active: buttonColor_normal);
+			int pulseIndex = (int)pulse;
+			TimingButton.onClick.AddListener (delegate {
+				Menu_SetAmbientLighting (pulseIndex);
+			});
+		}
+		foreach(LightingColorE lColor in System.Enum.GetValues(typeof(LightingColorE))){
+			Button lighColorButton = NewButton_Nested(lColor.ToString(),lightingColors.GetColor(lColor));
+			LightingColorE exitColor = lColor;
+			lighColorButton.onClick.AddListener(delegate {
+				lightingCon.SetAmbientLighting(exitColor,(LightingConcole.Timing)activeTiming);
+			});
+		}
 	}
 	public void Menu_SetWasher(int activeTiming){
 		Debug.Log("Menu_SetWasher: " + activeTiming);
