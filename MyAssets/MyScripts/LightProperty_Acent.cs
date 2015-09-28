@@ -31,6 +31,7 @@ public class LightProperty_Washer : MonoBehaviour {
 	public float washerIntencity = 8.0f;
 	private float randomChangeRotation = 0f;
 	private int randomRotInt = 0;
+	public Texture[] cookies;
 
 	// Use this for initialization
 	void Start () {
@@ -87,11 +88,6 @@ public class LightProperty_Washer : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.T)){
 			RotateTo(0);
 		}
-
-
-			
-	
-
 		if(lastCheckTime + 5 < Time.time)
 			return;
 		Vector3 newDirection = Quaternion.Euler(assignedRotation) * Vector3.forward;
@@ -170,6 +166,9 @@ public class LightProperty_Washer : MonoBehaviour {
 		if(refurbishedV3.z < 0)
 			refurbishedV3.z = 360;
 		return refurbishedV3;
+	}
+	public void ChangeCoookie(int incCookieIndex){
+		lightsettings.cookie = cookies [incCookieIndex];
 	}
 	
 
