@@ -55,6 +55,11 @@ public class UIControl : MonoBehaviour
 		ClearActiveButtons();
 		Create_ShowControlButton();
 
+		Button WalkInButton = NewButton("Walk In Mode",buttonColor_normal);
+		WalkInButton.onClick.AddListener(delegate {
+			lightingCon.Cue_WalkIn();
+		});
+
 		Button FindSpotQ = NewButton("Find Location",buttonColor_normal);
 		FindSpotQ.onClick.AddListener(delegate {
 			lightingCon.Cue_FindLocation();

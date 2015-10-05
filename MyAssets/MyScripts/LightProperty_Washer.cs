@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightProperty_Acent : MonoBehaviour {
+public class LightProperty_Washer : MonoBehaviour {
+
 	public Renderer lightSurface;
 	public Light lightsettings;
 	private Material materialCopy; 
@@ -22,9 +23,6 @@ public class LightProperty_Acent : MonoBehaviour {
 	private Vector3 assignedRotation;
 	private Vector3 lastRotation;
 	public GameObject[] lightingCones;
-
-	//public Material[] coneMats;
-
 	public float onDur = 1f;
 	public float waitDur =0f;
 	public Color setColor = Color.white;
@@ -39,6 +37,7 @@ public class LightProperty_Acent : MonoBehaviour {
 		lightSurface.material = materialCopy;
 		SetLight(LightState.off,Color.blue,1f);
 	}
+
 	public void SetLight (LightState state, Color color, float incSpeed){
 		lastCheckTime = Time.time;
 		speed = incSpeed;
@@ -78,6 +77,7 @@ public class LightProperty_Acent : MonoBehaviour {
 			break;
 		}
 	}
+
 	void Update(){
 		if(Input.GetKeyDown(KeyCode.R)){
 			RotateTo(1);
@@ -85,14 +85,10 @@ public class LightProperty_Acent : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.T)){
 			RotateTo(0);
 		}
-			
-	
-
 		if(lastCheckTime + 5 < Time.time)
 			return;
 		Vector3 newDirection = Quaternion.Euler(assignedRotation) * Vector3.forward;
 		rotationController.forward = Vector3.RotateTowards(rotationController.forward,newDirection,5*Time.deltaTime,0.0f);
-
 		if(assignedColor != lightsettings.color)
 		{
 			Color newColor = Color.Lerp(lastColor,assignedColor,interpliation);
@@ -112,12 +108,13 @@ public class LightProperty_Acent : MonoBehaviour {
 			intencityInterp = 0f;
 			oldIntencity = lightsettings.intensity;
 		}
-
 	}
+
 	public void LightUp(){
 		Debug.Log("highlighting player on spot " + spotID);
 			StartCoroutine(TriggerHighLight());
 	}
+
 	public IEnumerator TriggerHighLight(){
 		yield return new WaitForSeconds(waitDur);
 		speed = 10;
@@ -126,8 +123,6 @@ public class LightProperty_Acent : MonoBehaviour {
 		bool previousEnabled = lensFlare.enabled;
 		lensFlare.color = setColor;
 		assignedColor = setColor;
-
-		//lightsettings.color = setColor;
 		lensFlare.enabled = true;
 		lightSurface.enabled = true;
 		assignedIntencity = washerIntencity;
@@ -144,6 +139,7 @@ public class LightProperty_Acent : MonoBehaviour {
 			cone.SetActive(previousEnabled);
 		}
 	}
+
 	public void RotateTo(int rotationIndex){
 		lastCheckTime = Time.time;
 		assignedRotation = presetRotationsEulers[rotationIndex];
@@ -155,18 +151,14 @@ public class LightProperty_Acent : MonoBehaviour {
 			refurbishedV3.x = 0;
 		if(refurbishedV3.x < 0)
 			refurbishedV3.x = 360;
-
 		if(refurbishedV3.y > 360)
 			refurbishedV3.y = 0;
 		if(refurbishedV3.y < 0)
 			refurbishedV3.y = 360;
-
 		if(refurbishedV3.z > 360)
 			refurbishedV3.z = 0;
 		if(refurbishedV3.z < 0)
 			refurbishedV3.z = 360;
 		return refurbishedV3;
 	}
-	
-
 }

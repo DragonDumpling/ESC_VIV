@@ -7,6 +7,7 @@ public class LightingConcole : MonoBehaviour
 	private LightProperty[] spotlights;
 	private LightProperty_Washer[] washerLights;
 	private LightProperty_Ambient[] ambientLights;
+	private LightProperty_Acent[] acentLights;
 	private Dictionary<int,Spot> spots;
 	private Dictionary<int,List<int>> teams;
 	public LightingColor colorPicker;
@@ -127,6 +128,7 @@ public class LightingConcole : MonoBehaviour
 		spotlights = gameObject.GetComponentsInChildren<LightProperty> ();
 		washerLights = gameObject.GetComponentsInChildren<LightProperty_Washer>();
 		ambientLights = gameObject.GetComponentsInChildren<LightProperty_Ambient>();
+		acentLights = gameObject.GetComponentInChildren<LightProperty_Acent>();
 		teamColors = new Dictionary<int, LightingColorE> ();
 		SetTeams (1);
 	}
@@ -394,7 +396,15 @@ public class LightingConcole : MonoBehaviour
 	// Lighting Cues
 	public void Cue_WalkIn ()
 	{
-
+		foreach (LightProperty_Ambient aLight in ambientLights) {
+			aLight.SetLight (LightState.on, colorPicker.GetColor(LightingColorE.Light_Blue), GetTimingFloatValue(Timing.Three));
+		}
+		foreach(LightProperty_Acent acentLights in acentLights){
+		acentLights.SetLight (LightState.on, Color.blue, 0.5f);
+		acentLights.ChangeCoookie(0);
+		}
+		SetTeams(1);
+		SetLightingForTeam(1,LightingColorE.Light_Blue);
 	}
 
 	public void Cue_GameLaunch ()
